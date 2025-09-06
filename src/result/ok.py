@@ -1,5 +1,5 @@
 from typing import NoReturn
-from result.interface import T, Result
+from .interface import T, Result
 
 class Ok(Result[T, NoReturn]):
     """

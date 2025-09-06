@@ -1,5 +1,5 @@
 from typing import NoReturn
-from result.interface import E, F, T, U, Result
+from .interface import E, F, T, U, Result
 
 class Err(Result[NoReturn, E]):
     """
