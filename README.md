@@ -4,6 +4,14 @@ Accord brings the robust error handling and optional value patterns from Rust's 
 
 We intend not to use any kind of non-std library on Accord, so we do not need any extra dependency as a drawback for using it.
 
+## Why "Accord"?
+
+> The tale I weave for you now is about a puppet that travels the world.
+>
+> The puppet's goal is to observe how humans live their lives.
+>
+> This puppet continues its journey still, carrying its large suitcase with it...
+
 ## Features
 
 - **`Result<T, E>`**: Represents either a success (`Ok(T)`) or a failure (`Err(E)`).
@@ -110,12 +118,6 @@ None.and_then(get_user_id_as_str) # None -> Returns None
 Yes.
 
 I was feeling lazy. I'll make it myself in the future.
-
-### Why "Accord"?
-
-> The tale I weave for you now is about a puppet that travels the world.
-> The puppet's goal is to observe how humans live their lives.
-> This puppet continues its journey still, carrying its large suitcase with it...
 
 ### What is `Result` and `Option`?
 

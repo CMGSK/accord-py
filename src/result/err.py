@@ -1,5 +1,5 @@
 from typing import Any, Generic, overload
-from .interface import E, F, T, U, Result
+from .interface import E, T, Result
 
 class _Err(Result[Any, E], Generic[T, E]):
     """

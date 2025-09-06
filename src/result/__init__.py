@@ -1,4 +1,3 @@
-from typing import TYPE_CHECKING
 from .interface import Result
 from .err import Err, _Err
 from .ok import Ok

@@ -1,8 +1,6 @@
 import unittest
-from typing import TypeVar
 
-from src.result import Result, Ok
-from src.result.err import Err
+from src.result import Result, Ok, Err
 
 class TestResult(unittest.TestCase):
     """Test suite for the Result type and its variants Ok and Err."""
@@ -17,7 +15,6 @@ class TestResult(unittest.TestCase):
         with self.assertRaisesRegex(TypeError, "You cannot inherit from a sealed class"):
             class MyCustomResult(Result[int, str]): 
                 def is_ok(self) -> bool: return False
-                # ... other methods would be required but we fail at class creation
                 pass
 
     def test_ok_creation_and_properties(self):
