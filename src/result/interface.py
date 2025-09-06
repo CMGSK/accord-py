@@ -1,5 +1,5 @@
 from typing import Generic, TypeVar, Callable
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
 from ..meta import SealedAccord
 
@@ -9,7 +9,7 @@ U = TypeVar('U')
 E = TypeVar('E')
 F = TypeVar('F')
 
-class Result(ABC, Generic[T, E], metaclass=SealedAccord):
+class Result(Generic[T, E], metaclass=SealedAccord):
     """
     Abstract class for Result.
 

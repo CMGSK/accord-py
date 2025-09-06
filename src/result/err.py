@@ -1,7 +1,7 @@
-from typing import NoReturn
+from typing import Any, Generic, overload
 from .interface import E, F, T, U, Result
 
-class Err(Result[NoReturn, E]):
+class _Err(Result[Any, E], Generic[T, E]):
     """
     Represents a failed operation from a Result returning 
     function containing the value E.
@@ -17,9 +17,14 @@ class Err(Result[NoReturn, E]):
         return f'Err({self._error!r})'
 
     def __eq__(self, o: object):
-        if isinstance(o, Err):
-            return self._error == o._error
-        return False
+        if not isinstance(o, _Err):
+            return False
+        if isinstance(self._error, BaseException) and isinstance(o._error, BaseException):
+            return self._error.args == o._error.args
+        return self._error == o._error
+
+    def __hash__(self):
+        return hash(("Err", self._error))
 
 
     def is_ok(self):
@@ -44,10 +49,21 @@ class Err(Result[NoReturn, E]):
         return self
         
     def map_err(self, f):
-        return Err(f(self._error))
+        return _Err(f(self._error))
 
     def and_then(self, f):
         return self
 
     def or_else(self, f):
         return f(self._error)
+
+@overload
+def Err(error: E) -> Result[T, E]: ...
+@overload
+def Err(error: E) -> _Err[T, E]: ...
+
+def Err(error: E):
+    return _Err(error)
+
+
+err_result: Result[int, str] = Err("test")

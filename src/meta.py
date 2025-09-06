@@ -1,6 +1,10 @@
 from abc import ABCMeta
+from typing import Generic, TypeVar
 
-class SealedAccord(ABCMeta):
+T = TypeVar('T')
+E = TypeVar('E')
+
+class SealedAccord(ABCMeta, Generic[T, E]):
     """
     Prevent arbitrary inheritance from sealed classes. 
     This implementation allows for only specific, pre-registered subclasses to inherit.

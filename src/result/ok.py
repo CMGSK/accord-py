@@ -1,7 +1,7 @@
-from typing import NoReturn
-from .interface import T, Result
+from typing import Generic, NoReturn
+from .interface import E, T, Result
 
-class Ok(Result[T, NoReturn]):
+class Ok(Result[T, E], Generic[T, E]):
     """
     Represents a successful operation from a Result returning 
     function containing the value T.
@@ -20,6 +20,9 @@ class Ok(Result[T, NoReturn]):
         if isinstance(o, Ok):
             return self._value == o._value
         return False
+    
+    def __hash__(self):
+        return hash(("Ok", self._value))
 
 
     def is_ok(self):
@@ -31,11 +34,11 @@ class Ok(Result[T, NoReturn]):
     def unwrap(self):
         return self._value
 
-    def expect(self):
+    def expect(self, _):
         return self._value
 
     def unwrap_err(self) -> NoReturn:
-        raise RuntimeError(f'Called unwrap_err() on an Ok value: {self._value!r}')
+        raise RuntimeError(f'Called unwrap_err on an Ok value: {self._value!r}')
 
     def unwrap_or(self, _): 
         return self._value

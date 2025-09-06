@@ -1,13 +1,8 @@
 import unittest
 from typing import TypeVar
 
-from src.result import Result, Ok, Err
-
-T = TypeVar("T")
-E = TypeVar("E")
-U = TypeVar("U")
-F = TypeVar("F")
-
+from src.result import Result, Ok
+from src.result.err import Err
 
 class TestResult(unittest.TestCase):
     """Test suite for the Result type and its variants Ok and Err."""
@@ -15,12 +10,12 @@ class TestResult(unittest.TestCase):
     def test_result_cannot_be_instantiated_directly(self):
         """Test that the abstract Result class cannot be instantiated."""
         with self.assertRaisesRegex(TypeError, "Can't instantiate abstract class Result"):
-            Result() # type: ignore
+            Result() 
 
     def test_result_cannot_be_inherited_manually(self):
         """Test that Result cannot be subclassed arbitrarily."""
-        with self.assertRaisesRegex(TypeError, "Cannot inherit from sealed class 'Result'"):
-            class MyCustomResult(Result[int, str]): # type: ignore
+        with self.assertRaisesRegex(TypeError, "You cannot inherit from a sealed class"):
+            class MyCustomResult(Result[int, str]): 
                 def is_ok(self) -> bool: return False
                 # ... other methods would be required but we fail at class creation
                 pass
@@ -28,7 +23,7 @@ class TestResult(unittest.TestCase):
     def test_ok_creation_and_properties(self):
         """Test Ok instance creation and its state properties."""
         ok_value = 42
-        ok_result: Result[int, str] = Ok(ok_value)
+        ok_result: Result[int, str] = Ok(ok_value) 
 
         self.assertTrue(ok_result.is_ok())
         self.assertFalse(ok_result.is_err())
@@ -65,7 +60,7 @@ class TestResult(unittest.TestCase):
         """Test expect on Err raises a RuntimeError with the custom message."""
         err_val = "original error"
         custom_msg = "This operation failed"
-        with self.assertRaisesRegex(RuntimeError, f"{custom_msg}: {err_val!r}"):
+        with self.assertRaisesRegex(RuntimeError, f"{custom_msg}.\n{err_val!r}"):
             Err(err_val).expect(custom_msg)
 
     def test_ok_unwrap_err_raises_runtime_error(self):
