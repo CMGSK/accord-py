@@ -8,9 +8,6 @@ U = TypeVar('U')
 
 class Option(Generic[T], metaclass=SealedAccord):
 
-    def __init__(self, v: T) -> T:
-        v
-
     @abstractmethod
     def is_some(self) -> bool:
         """Returns True if the Option is Some"""
@@ -51,7 +48,17 @@ class Option(Generic[T], metaclass=SealedAccord):
     def map(self, f: Callable[[T], U]) -> "Option[U]":
         """
         Maps an Option[T] into Option[U] by applying a function to a
-        Some contained value.
+        Some contained value. Returns None skipping the Callable if the
+        value is None.
+        """
+        pass
+
+    @abstractmethod
+    def map_unchecked(self, f: Callable[[T], U]) -> "Option[U]":
+        """
+        Maps an Option[T] into Option[U] by applying a function to an
+        Option without checking if its value is None. Can raise exceptions 
+        if the Callable can not handle an operation with None.
         """
         pass
 

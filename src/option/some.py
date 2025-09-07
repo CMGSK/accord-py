@@ -7,7 +7,7 @@ class Some(Option[T], Generic[T]):
         self._value = value
     
     def __repr__(self):
-        return f'Some({self._value!r})'
+        return f'Some({self._value!r})' if self._value is not None else 'None'
 
     def __eq__(self, o: object):
         if isinstance(o, Some):
@@ -38,6 +38,9 @@ class Some(Option[T], Generic[T]):
         return fallback if self._value is None else self._value
 
     def map(self, f):
+        return cast(Option[T], Some(f(self._value))) if self._value is not None else None
+
+    def map_unchecked(self, f):
         return cast(Option[T], Some(f(self._value)))
 
     def and_then(self, f):

@@ -16,7 +16,7 @@ class TestOption(unittest.TestCase):
         self.assertEqual(repr(Some(10)), "Some(10)")
         self.assertEqual(repr(Some("hello")), "Some('hello')")
         self.assertEqual(repr(Some([1, 2])), "Some([1, 2])")
-        self.assertEqual(repr(Some(None)), "Some(None)")
+        self.assertEqual(repr(Some(None)), "None")
 
     def test_some_eq(self):
         """Test equality comparison for Some instances."""
@@ -48,13 +48,15 @@ class TestOption(unittest.TestCase):
 
     def test_is_some_and_is_none_for_some_holding_none(self):
         """Test is_some and is_none for Some(None) based on your implementation."""
-        s_with_none_value = Some(None)
+        s: str = None
+        s_with_none_value = Some(s)
         self.assertFalse(s_with_none_value.is_some()) 
         self.assertTrue(s_with_none_value.is_none())  
 
     def test_is_none_for_python_none(self):
         """Test that Python's None keyword acts like the 'None' variant of Option."""
-        s = cast(Option[str], Some(None))
+        t: str = None
+        s = cast(Option[str], Some(t))
         self.assertTrue(s.is_none())
 
     def test_unwrap_on_some_with_value(self):
@@ -67,7 +69,8 @@ class TestOption(unittest.TestCase):
 
     def test_unwrap_on_some_holding_none_raises_runtime_error(self):
         """Test unwrap on a Some(None) instance (based on your implementation)."""
-        s_with_none = Some(None)
+        s: str = None
+        s_with_none = Some(s)
         with self.assertRaisesRegex(RuntimeError, 'Called unwrap in a None Option value: None'):
             s_with_none.unwrap()
 
@@ -77,7 +80,8 @@ class TestOption(unittest.TestCase):
             if x > 0:
                 return cast(Option[int], Some(x))
             else:
-                return cast(Option[int], Some(None))
+                s: str = None
+                return cast(Option[int], Some(s))
 
         option_val_positive = maybe_return_some_or_none(5)
         self.assertEqual(option_val_positive.unwrap(), 5)
@@ -93,7 +97,8 @@ class TestOption(unittest.TestCase):
 
     def test_expect_on_some_holding_none_raises_runtime_error(self):
         """Test expect on a Some(None) instance (based on your implementation)."""
-        s_with_none = Some(None)
+        s: str = None
+        s_with_none = Some(s)
         custom_msg = "Custom error message"
         with self.assertRaisesRegex(RuntimeError, f'{custom_msg}.\nNone'):
             s_with_none.expect(custom_msg)
@@ -108,13 +113,15 @@ class TestOption(unittest.TestCase):
 
     def test_unwrap_or_on_some_holding_none(self):
         """Test unwrap_or on a Some(None) instance (based on your implementation)."""
-        s_with_none = Some(None)
+        s: str = None
+        s_with_none = Some(s)
         fallback_val = "default_fallback"
         self.assertEqual(s_with_none.unwrap_or(fallback_val), fallback_val)
 
     def test_unwrap_or_on_python_none(self):
         """Test unwrap_or on Python's None keyword."""
-        option_none = cast(Option[str], Some(None))
+        s: str = None
+        option_none = cast(Option[str], Some(s))
         fallback_val = "default_for_none"
         self.assertEqual(option_none.unwrap_or(fallback_val), fallback_val)
 
@@ -133,26 +140,31 @@ class TestOption(unittest.TestCase):
 
     def test_map_on_some_holding_none(self):
         """Test map on a Some(None) instance (based on your implementation)."""
-        s_with_none = Some(None)
+        s: int = None
+        s_with_none = Some(s)
         mapped_s_handled = s_with_none.map(lambda x: x * 2 if x is not None else 0)
-        self.assertIsInstance(mapped_s_handled, Some)
-        self.assertEqual(mapped_s_handled, Some(0))
+        self.assertIsNone(mapped_s_handled)
 
-        with self.assertRaises(TypeError): 
-             s_with_none.map(lambda x: x * 2)
+        s_with_none.map(lambda x: x * 2)
+        self.assertTrue(s_with_none.is_none())
+
+        t = s_with_none.map(lambda x: x * 2)
+        self.assertIsNone(t)
              
     def test_map_on_python_none(self):
         """Test map on Python's None keyword (as the None variant of Option)."""
-        mapped_option = cast(Option[int], Some(None)).map(lambda x: x * 2)
+        s: int = None
+        mapped_option = cast(Option[int], Some(s)).map(lambda x: x * 2)
         self.assertIsNone(mapped_option) 
 
-        mapped_option_value = None.map(lambda x: "default_val")
+        none = Some(s)
+        mapped_option_value = none.map(lambda x: "default_val")
         self.assertIsNone(mapped_option_value) 
 
         def func_returning_option(x):
             return Some(x) if x is not None else None
 
-        mapped_option_func = None.map(func_returning_option)
+        mapped_option_func = none.map(func_returning_option)
         self.assertIsNone(mapped_option_func)
 
 
@@ -178,7 +190,8 @@ class TestOption(unittest.TestCase):
 
     def test_and_then_on_some_holding_none(self):
         """Test and_then on a Some(None) instance (based on your implementation)."""
-        s_with_none = Some(None)
+        s: str = None
+        s_with_none = Some(s)
         
         def func_handling_none(val):
             if val is None:
@@ -199,7 +212,8 @@ class TestOption(unittest.TestCase):
         """Test and_then on Python's None keyword (as the None variant of Option)."""
         
         def dummy_func(val):
-            return Some(None)
+            s: str = None
+            return Some(s)
         
         result = cast(Option[str], Some(None)).and_then(dummy_func)
         self.assertTrue(result.is_none())
@@ -216,7 +230,8 @@ class TestOption(unittest.TestCase):
         
     def test_take_on_some_holding_none(self):
         """Test take on a Some instance that already holds None."""
-        s_with_none = Some(None)
+        s: str = None
+        s_with_none = Some(s)
         taken_value = s_with_none.take()
         
         self.assertIsNone(taken_value) 
