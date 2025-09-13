@@ -64,6 +64,3 @@ def Err(error: E) -> _Err[T, E]: ...
 
 def Err(error: E):
     return _Err(error)
-
-
-err_result: Result[int, str] = Err("test")

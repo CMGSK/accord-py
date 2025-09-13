@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: accord-types
-Version: 0.1.0b1
+Version: 0.1.0b3
 Summary: Agnostic-language library to use Result and Option from Rust
 Author-email: Carlos Manso <carlosmgov7k@gmail.com>
 License:                                  Apache License
